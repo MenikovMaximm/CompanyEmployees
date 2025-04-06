@@ -1,4 +1,5 @@
 ﻿using CompanyEmployees.Extensions;
+using Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
@@ -25,9 +26,10 @@ namespace CompanyEmployees
             services.ConfigureLoggerService();
             services.ConfigureSqlContext(Configuration);
             services.ConfigureRepositoryManager();
+            services.AddAutoMapper(typeof(Startup));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
@@ -36,6 +38,8 @@ namespace CompanyEmployees
             else
             {
             }
+
+            app.ConfigureExceptionHandler(logger);
             app.UseHttpsRedirection();
             app.UseHsts();
             app.UseStaticFiles();
