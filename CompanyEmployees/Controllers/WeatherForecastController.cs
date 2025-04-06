@@ -1,5 +1,6 @@
 using Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Repository;
 
 namespace CompanyEmployees.Controllers
 {
@@ -7,23 +8,17 @@ namespace CompanyEmployees.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private ILoggerManager _logger;
-
-        public WeatherForecastController(ILoggerManager logger)
+        private readonly IRepositoryManager _repository;
+        public WeatherForecastController(IRepositoryManager repository)
         {
-            _logger = logger;
+            _repository = repository;
         }
-
         [HttpGet]
-        public IEnumerable<string> Get()
+
+        public ActionResult<IEnumerable<string>> Get()
         {
-            _logger.LogInfo("¬от информационное сообщение от нашего контроллера значений.");
-           
-            _logger.LogDebug("¬от отладочное сообщение от нашего контроллера значений.");
-           
-            _logger.LogWarn("¬от сообщение предупреждени€ от нашего контроллера значений.");
-           
-            _logger.LogError("¬от сообщение об ошибке от нашего контроллера значений.");
+            _repository.Company.AnyMethodFromCompanyRepository();
+            _repository.Employee.AnyMethodFromEmployeeRepository();
             return new string[] { "value1", "value2" };
         }
     }

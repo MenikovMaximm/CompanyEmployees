@@ -23,6 +23,8 @@ namespace CompanyEmployees
             services.ConfigureIISIntegration();
             services.AddControllers();
             services.ConfigureLoggerService();
+            services.ConfigureSqlContext(Configuration);
+            services.ConfigureRepositoryManager();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
