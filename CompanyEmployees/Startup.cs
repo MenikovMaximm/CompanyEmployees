@@ -2,8 +2,10 @@
 using Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using NLog;
+using System.Text.Json.Serialization;
 
 namespace CompanyEmployees
 {
@@ -28,10 +30,14 @@ namespace CompanyEmployees
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers(config =>
             {
+
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
             }).AddXmlDataContractSerializerFormatters()
-            .AddCustomCSVFormatter();
+            .AddCustomCSVFormatter().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            }); ;
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
