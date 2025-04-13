@@ -1,5 +1,7 @@
 ﻿using CompanyEmployees.Extensions;
 using Contracts;
+using AutoMapper;
+using Entities.DataTransferObjects;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
@@ -30,14 +32,11 @@ namespace CompanyEmployees
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers(config =>
             {
-
                 config.RespectBrowserAcceptHeader = true;
                 config.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters()
-            .AddCustomCSVFormatter().AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            }); ;
+            }).AddNewtonsoftJson()
+ .AddXmlDataContractSerializerFormatters()
+ .AddCustomCSVFormatter();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
